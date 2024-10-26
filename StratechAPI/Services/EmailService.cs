@@ -25,21 +25,28 @@ namespace StratechAPI.Services
         */
         public async Task SendEmailAsync(string toEmail, string subject, string message)
         {
-            var emailMessage = new MimeMessage();
-
-            emailMessage.From.Add(new MailboxAddress("Stratech API", _smtpSettings.Mail));
-            emailMessage.To.Add(new MailboxAddress("", toEmail));
-            emailMessage.Subject = subject;
-            emailMessage.Body = new TextPart("html") { Text = message };
-
-            using (var client = new SmtpClient())
+            try
             {
-                await client.ConnectAsync(_smtpSettings.Server,_smtpSettings.Port, SecureSocketOptions.StartTls);
-                await client.AuthenticateAsync(_smtpSettings.Username, _smtpSettings.Password);
-                await client.SendAsync(emailMessage);
-                await client.DisconnectAsync(true);
-                client.Disconnect(true);
+                var emailMessage = new MimeMessage();
+
+                emailMessage.From.Add(new MailboxAddress("Stratech API", _smtpSettings.Mail));
+                emailMessage.To.Add(new MailboxAddress("", toEmail));
+                emailMessage.Subject = subject;
+                emailMessage.Body = new TextPart("html") { Text = message };
+
+                using (var client = new SmtpClient())
+                {
+                    await client.ConnectAsync(_smtpSettings.Server, _smtpSettings.Port, SecureSocketOptions.StartTls);
+                    await client.AuthenticateAsync(_smtpSettings.Username, _smtpSettings.Password);
+                    await client.SendAsync(emailMessage);
+                    await client.DisconnectAsync(true);
+                    client.Disconnect(true);
+                }
             }
+            catch (Exception e)
+            {
+                throw new Exception($"An error occurred while sending the email: {e.Message}", e);
+            }           
         }
 
     }
