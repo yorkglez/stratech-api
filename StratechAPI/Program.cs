@@ -16,6 +16,7 @@ builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpS
 builder.Services.AddScoped<AudienceService>();
 builder.Services.AddScoped<FileService>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
 
 var app = builder.Build();
 
