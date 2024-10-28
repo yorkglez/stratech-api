@@ -1,21 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using StratechAPI.Services;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace StratechAPI.Controller
 {
-    [Route("api/")]
+    [Route("[Controller]")]
     [ApiController]
     public class ApiController : ControllerBase
     {
         private readonly AudienceService _audienceService;
-        private readonly EmailService _emailService;
+        private readonly FileService _fileService;
 
         public ApiController(AudienceService audienceService, EmailService emailService)
         {
             _audienceService = audienceService;
-            _emailService = emailService;
         }
 
         /**
@@ -45,6 +42,6 @@ namespace StratechAPI.Controller
             {
                 return BadRequest(e.Message);
             }
-        }     
+        }
     }
 }
